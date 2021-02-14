@@ -1,7 +1,7 @@
 # azyc: Yaml to azure deployment parameter json converter
 
-[![PyPI - License](https://img.shields.io/pypi/l/azyc)](https://pypi.org/project/flask-session-azure/)
-[![PyPI](https://img.shields.io/pypi/v/azyc)](https://pypi.org/project/flask-session-azure/)
+[![PyPI - License](https://img.shields.io/pypi/l/azyc)](https://pypi.org/project/azyc/)
+[![PyPI](https://img.shields.io/pypi/v/azyc)](https://pypi.org/project/azyc/)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/azyc)
 
 Helper to create large large deployment-parameters.json files from small yaml files
