@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='azyc',
-    version='0.2.0',
+    version='0.2.1',
     packages=['azyc'],
     url='https://github.com/claasd/azyc',
     license='MIT',
