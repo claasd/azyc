@@ -19,18 +19,26 @@ Examples:
 foo: bar
 booleanParam: true
 numericParam: 22
+
 fileParam:
-    file: path_to_file # will be read as utf-8, escaped and passed as string
+  file: path_to_file # will be read as utf-8, escaped and passed as string
+
 binaryFileParam:
-    binary: path_to_binary_file # will be read as binary, base64 encoded and passed as string
+  binary: path_to_binary_file # will be read as binary, base64 encoded and passed as string
+
+yamlParam:
+  yaml: path_to_file # will be read as utf-8 yaml, optionally transformed and passed as escaped string
+  overwrite: # optional, you can overwrite or add some parts in the yaml file with overwrite
+    title: other title
+ 
 keyVaultParam:
-    keyVault: /subscriptions/<subscription-id>/resourceGroups/<rg-name>/providers/Microsoft.KeyVault/vaults/<vault-name>
-    secretName: ExamplePassword
+  keyVault: /subscriptions/<subscription-id>/resourceGroups/<rg-name>/providers/Microsoft.KeyVault/vaults/<vault-name>
+  secretName: ExamplePassword
 
 keyVaultParamWitVersion:
-    keyVault: /subscriptions/<subscription-id>/resourceGroups/<rg-name>/providers/Microsoft.KeyVault/vaults/<vault-name>
-    secretName: ExamplePassword
-    secretVersion: cd91b2b7e10e492ebb870a6ee0591b68
+  keyVault: /subscriptions/<subscription-id>/resourceGroups/<rg-name>/providers/Microsoft.KeyVault/vaults/<vault-name>
+  secretName: ExamplePassword
+  secretVersion: cd91b2b7e10e492ebb870a6ee0591b68
  ```
 
 Basic call:

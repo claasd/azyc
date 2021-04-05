@@ -1,5 +1,6 @@
 import base64
 import distutils.util
+import logging
 import os
 import json
 from typing import Union
@@ -24,22 +25,34 @@ def convert(input_file: str, output_file: str, extra_params: Union[dict, None] =
                 with open(base_path + '/' + value['file'], "r", encoding="utf-8") as f:
                     data = str(f.read())
                 params[key] = {"value": data}
-            if "binary" in value:
+            elif "binary" in value:
                 with open(base_path + '/' + value['binary'], "rb") as f:
                     data = f.read()
                 data = base64.b64encode(data)
                 params[key] = {"value": data.decode('utf-8')}
-            if "keyVault" in value:
+            elif "keyVault" in value:
                 if not "secretName" in value:
                     raise Warning("'secretName' is required when using a keyVault for deployment")
                 reference = {
-                        "keyVault": {"id" : str(value['keyVault']) },
-                        "secretName" : str(value["secretName"])
-                    }
+                    "keyVault": {"id": str(value['keyVault'])},
+                    "secretName": str(value["secretName"])
+                }
 
                 if "secretVersion" in value:
                     reference["secretVersion"] = str(value["secretVersion"])
-                params[key] = {"reference" : reference}
+                params[key] = {"reference": reference}
+            elif "yaml" in value:
+                with open(base_path + '/' + value['yaml'], "r", encoding="utf-8") as f:
+                    data = yaml.safe_load(f)
+                values_to_overwrite = value.get("overwrite")
+                if values_to_overwrite is not None:
+                    for overwrite_key, overwrite_value in values_to_overwrite.items():
+                        data[overwrite_key] = overwrite_value
+                params[key] = {"value": yaml.safe_dump(data)}
+            else:
+                logging.warning(
+                    f"Could not parse section: '{key}'. None of the keys where recognized as arguments: " + str(
+                        list(value.keys())))
         else:
             params[key] = {"value": value}
 
