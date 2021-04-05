@@ -10,6 +10,16 @@ import yaml
 import argparse
 
 
+def merge(source: dict, target: dict):
+    for key, value in source.items():
+        if isinstance(value, dict):
+            node = target.setdefault(key, {})
+            merge(value, node)
+        else:
+            target[key] = value
+    return target
+
+
 def convert(input_file: str, output_file: str, extra_params: Union[dict, None] = None):
     if extra_params is None:
         extra_params = dict()
@@ -46,8 +56,7 @@ def convert(input_file: str, output_file: str, extra_params: Union[dict, None] =
                     data = yaml.safe_load(f)
                 values_to_overwrite = value.get("overwrite")
                 if values_to_overwrite is not None:
-                    for overwrite_key, overwrite_value in values_to_overwrite.items():
-                        data[overwrite_key] = overwrite_value
+                    data = merge(values_to_overwrite, data)
                 params[key] = {"value": yaml.safe_dump(data)}
             else:
                 logging.warning(

@@ -8,11 +8,13 @@ fileParam:
 convertParam:
     yaml: test.yml # will be read as utf-8 yaml, optionally transformed and passed as escaped string
     overwrite:
-        title: "Other Title"
+        info:
+            title: "Other Title"
 
 invalid:
     blubb: bla
     lala: lulu
+
 binaryFileParam:
     binary: README.md # will be read as binary, base64 encoded and passed as string
 
