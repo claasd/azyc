@@ -20,6 +20,18 @@ foo: bar
 booleanParam: true
 numericParam: 22
 
+arrayParam:
+  array:
+    - id: firstId
+      name: firstName
+    - id: secondId
+      name: secondName
+
+objectParam:
+  object:
+    id: firstId
+    name: firstName
+    
 fileParam:
   file: path_to_file # will be read as utf-8, escaped and passed as string
 

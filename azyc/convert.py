@@ -31,7 +31,11 @@ def convert(input_file: str, output_file: str, extra_params: Union[dict, None] =
     params = dict()
     for key, value in config.items():
         if type(value) is dict:
-            if "file" in value:
+            if "array" in value:
+                params[key] = {"value": list(value["array"])}
+            elif "object" in value:
+                params[key] = {"value": dict(value["object"])}
+            elif "file" in value:
                 with open(base_path + '/' + value['file'], "r", encoding="utf-8") as f:
                     data = str(f.read())
                 params[key] = {"value": data}
