@@ -20,14 +20,7 @@ def merge(source: dict, target: dict):
     return target
 
 
-def convert(input_file: str, output_file: str, extra_params: Union[dict, None] = None):
-    if extra_params is None:
-        extra_params = dict()
-
-    with open(input_file, "r", encoding="utf-8") as f:
-        config = yaml.safe_load(f)
-
-    base_path = os.path.abspath(os.path.dirname(input_file))
+def convert_dict(config: dict, base_path: str):
     params = dict()
     for key, value in config.items():
         if type(value) is dict:
@@ -68,15 +61,10 @@ def convert(input_file: str, output_file: str, extra_params: Union[dict, None] =
                         list(value.keys())))
         else:
             params[key] = {"value": value}
+    return params
 
-    for key, value in extra_params.items():
-        try:
-            params[key] = {"value": int(value)}
-        except ValueError:
-            try:
-                params[key] = {"value": bool(distutils.util.strtobool(value))}
-            except ValueError:
-                params[key] = {"value": value}
+
+def write_params(output_file: str, params: dict):
     paramsFile = {
         "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
         "contentVersion": "1.0.0.0",
@@ -86,3 +74,25 @@ def convert(input_file: str, output_file: str, extra_params: Union[dict, None] =
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(paramsFile, f, indent=2)
     print(f"parameter file written to {output_file}")
+
+
+def convert(input_file: str, output_file: str, extra_params: Union[dict, None] = None):
+    if extra_params is None:
+        extra_params = dict()
+
+    with open(input_file, "r", encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+
+    base_path = os.path.abspath(os.path.dirname(input_file))
+    params = convert_dict(config, base_path)
+
+    for key, value in extra_params.items():
+        try:
+            params[key] = {"value": int(value)}
+        except ValueError:
+            try:
+                params[key] = {"value": bool(distutils.util.strtobool(value))}
+            except ValueError:
+                params[key] = {"value": value}
+
+    write_params(params)
